@@ -5,8 +5,8 @@ namespace App\Http\Controllers\API;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Controller;
-use  App\User;
-use Intervention\Image\ImageServiceProvider;
+use App\User;
+use Intervention\Image\Facades\Image;
 
 class UserController extends Controller
 {
@@ -71,7 +71,7 @@ class UserController extends Controller
         $currentPhoto = $user->photo;
         if($request->photo != $currentPhoto){
             $name = time().'.' . explode('/', explode(':', substr($request->photo, 0, strpos($request->photo, ';')))[1])[1];
-            \Image::make($request->photo)->save(public_path('img/profile/').$name);
+            Image::make($request->photo)->save(public_path('img/profile/').$name);
             $request->merge(['photo' => $name]);
             $userPhoto = public_path('img/profile/').$currentPhoto;
             if(file_exists($userPhoto)){
